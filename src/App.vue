@@ -1,28 +1,125 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div :class="{'offCanvas__minicart_active':modal}">
+    <!-- <Loader v-if=`!['Home',].includes($route.name)`/> -->
+    <Header @showModal="addTask" ></Header>
+    <main class="main__content_wrapper">
+      <router-view></router-view>
+    <Shipping ></Shipping>
+    </main>
+    <Footer></Footer>
+    <div class="newsletter__popup" data-animation="slideInUp">
+      <div id="boxes" class="newsletter__popup--inner">
+        <button
+          class="newsletter__popup--close__btn"
+          aria-label="search close button"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="32"
+              d="M368 368L144 144M368 144L144 368"
+            ></path>
+          </svg>
+        </button>
+        <div class="box newsletter__popup--box d-flex align-items-center">
+          <div class="newsletter__popup--thumbnail">
+            <img
+              class="newsletter__popup--thumbnail__img display-block"
+              src="assets/img/banner/newsletter-popup-thumb.png"
+              alt="newsletter-popup-thumb"
+            />
+          </div>
+          <div class="newsletter__popup--box__right">
+            <h2 class="newsletter__popup--title">Join Our Newsletter</h2>
+            <div class="newsletter__popup--content">
+              <label class="newsletter__popup--content--desc"
+                >Enter your email address to subscribe our notification of our
+                new post &amp; features by email.</label
+              >
+              <div class="newsletter__popup--subscribe" id="frm_subscribe">
+                <form class="newsletter__popup--subscribe__form">
+                  <input
+                    class="newsletter__popup--subscribe__input"
+                    type="text"
+                    placeholder="Enter you email address here..."
+                  />
+                  <button class="newsletter__popup--subscribe__btn">
+                    Subscribe
+                  </button>
+                </form>
+                <div class="newsletter__popup--footer">
+                  <input type="checkbox" id="newsletter__dont--show" />
+                  <label
+                    class="newsletter__popup--dontshow__again--text"
+                    for="newsletter__dont--show"
+                    >Don't show this popup again</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End News letter popup -->
+
+    <!-- Scroll top bar -->
+    <button id="scroll__top">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="ionicon"
+        viewBox="0 0 512 512"
+      >
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="48"
+          d="M112 244l144-144 144 144M256 120v292"
+        />
+      </svg>
+    </button>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import swiper from '../public/assets/js/plugins/swiper-bundle.min.js'
+import Header from "@/layout/Header.vue";
+import Footer from "@/layout/Footer.vue";
+import Loader from "@/layout/Loader.vue";
+import Shipping from "@/components/Shipping.vue"
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    Header,
+    Footer,
+    Loader,
+    Shipping
+  },
+  data() {
+    return {
+      modal: false,
+    };
+  },
+  methods:{
+    addTask(modal){
+      this.modal = modal
+    },
   }
-}
+};
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import '../public/assets/css/style.css';
 </style>
