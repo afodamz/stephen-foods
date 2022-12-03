@@ -9,7 +9,7 @@
           justify-content-center
         "
       >
-        <li class="pagination__list">
+        <li class="pagination__list" v-if="page != 1" @click="page--">
           <a href="shop.html" class="pagination__item--arrow link">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -29,19 +29,16 @@
             <span class="visually-hidden">page left arrow</span>
           </a>
         </li>
-        <li class="pagination__list">
-          <span class="pagination__item pagination__item--current">1</span>
+        <li
+          @click="page = pageNumber"
+          class="pagination__list"
+          v-for="pageNumber in pages.slice(page - 1, page + 5)"
+        >
+          <span class="pagination__item pagination__item--current">{{
+            pageNumber
+          }}</span>
         </li>
-        <li class="pagination__list">
-          <a href="shop.html" class="pagination__item link">2</a>
-        </li>
-        <li class="pagination__list">
-          <a href="shop.html" class="pagination__item link">3</a>
-        </li>
-        <li class="pagination__list">
-          <a href="shop.html" class="pagination__item link">4</a>
-        </li>
-        <li class="pagination__list" >
+        <li @click="page++" v-if="page < pages.length" class="pagination__list">
           <a href="shop.html" class="pagination__item--arrow link">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -73,32 +70,76 @@ export default {
     maxVisibleButtons: {
       type: Number,
       required: false,
-      default: 3
-    },    
+      default: 3,
+    },
     totalPages: {
       type: Number,
-      required: true
+      required: true,
     },
-    totalItems: {
+    pageItems: {
       type: Number,
-      required: true
+      required: true,
     },
     perPage: {
       type: Number,
       required: true,
-      default: 12
+      default: 10,
     },
-    currentPage: {
+    page: {
       type: Number,
       required: true,
-      default: 1
-    }
+      default: 1,
+    },
+    pages: {
+      type: Array,
+      required: true,
+      default: [],
+    },
   },
   data() {
     return {
       perPage: 4,
-      currentPage: 1,
+      page: 1,
     };
+  },
+  methods: {
+    getPosts() {
+      let data = [];
+      for (let i = 0; i < 200; i++) {
+        this.posts.push({ first: "John", last: "Doe", suffix: "#" + i });
+      }
+    },
+    setPages() {
+      let numberOfPages = Math.ceil(this.posts.length / this.perPage);
+      for (let index = 1; index <= numberOfPages; index++) {
+        this.pages.push(index);
+      }
+    },
+    paginate(posts) {
+      let page = this.page;
+      let perPage = this.perPage;
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+      return posts.slice(from, to);
+    },
+  },
+  computed: {
+    displayedPosts() {
+      return this.paginate(this.posts);
+    },
+  },
+  watch: {
+    posts() {
+      this.setPages();
+    },
+  },
+  created() {
+    this.getPosts();
+  },
+  filters: {
+    trimWords(value) {
+      return value.split(" ").splice(0, 20).join(" ") + "...";
+    },
   },
 };
 </script>
