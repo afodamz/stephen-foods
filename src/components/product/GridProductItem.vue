@@ -100,11 +100,11 @@
       <div class="product__items--content product__items2--content text-center">
         <a class="add__to--cart__btn" href="cart.html">+ Add to cart</a>
         <h3 class="product__items--content__title h4">
-          <a href="product-details.html">{{ product.title }}</a>
+          <a href="product-details.html">{{ product.name }}</a>
         </h3>
         <div class="product__items--price">
-          <span class="current__price">{{ product.currentPrice }}</span>
-          <span class="old__price">{{ product.oldPrice }}</span>
+          <span class="current__price">{{ product.price }}</span>
+          <span class="old__price">{{ product.old_price }}</span>
         </div>
         <div
           class="

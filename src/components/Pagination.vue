@@ -9,7 +9,7 @@
           justify-content-center
         "
       >
-        <li class="pagination__list" v-if="page != 1" @click="page--">
+        <li class="pagination__list">
           <a href="shop.html" class="pagination__item--arrow link">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -29,16 +29,12 @@
             <span class="visually-hidden">page left arrow</span>
           </a>
         </li>
-        <li
-          @click="page = pageNumber"
-          class="pagination__list"
-          v-for="pageNumber in pages.slice(page - 1, page + 5)"
-        >
-          <span class="pagination__item pagination__item--current">{{
-            pageNumber
-          }}</span>
+
+        <li></li>
+        <li class="pagination__list" @click="$emit('changePage', pageNumber)" :key="pageNumber" v-for="pageNumber in pages">
+          <a class="pagination__item " :class="{'pagination__item--current': page===pageNumber, 'link': page!==pageNumber}">{{pageNumber}}</a>
         </li>
-        <li @click="page++" v-if="page < pages.length" class="pagination__list">
+        <li class="pagination__list">
           <a href="shop.html" class="pagination__item--arrow link">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -58,6 +54,8 @@
             <span class="visually-hidden">page right arrow</span>
           </a>
         </li>
+
+        <li></li>
       </ul>
     </nav>
   </div>
@@ -67,16 +65,7 @@
 export default {
   name: "Pagination",
   props: {
-    maxVisibleButtons: {
-      type: Number,
-      required: false,
-      default: 3,
-    },
-    totalPages: {
-      type: Number,
-      required: true,
-    },
-    pageItems: {
+    pageItemsCount: {
       type: Number,
       required: true,
     },
@@ -90,56 +79,23 @@ export default {
       required: true,
       default: 1,
     },
-    pages: {
-      type: Array,
-      required: true,
-      default: [],
+    changePage: {
+      type: Function,
+      required: false,
     },
   },
   data() {
     return {
-      perPage: 4,
-      page: 1,
+      pages: Math.ceil(this.pageItemsCount / this.perPage),
+      // page: this.page
     };
   },
   methods: {
-    getPosts() {
-      let data = [];
-      for (let i = 0; i < 200; i++) {
-        this.posts.push({ first: "John", last: "Doe", suffix: "#" + i });
-      }
-    },
-    setPages() {
-      let numberOfPages = Math.ceil(this.posts.length / this.perPage);
-      for (let index = 1; index <= numberOfPages; index++) {
-        this.pages.push(index);
-      }
-    },
-    paginate(posts) {
-      let page = this.page;
-      let perPage = this.perPage;
-      let from = page * perPage - perPage;
-      let to = page * perPage;
-      return posts.slice(from, to);
-    },
+   
   },
-  computed: {
-    displayedPosts() {
-      return this.paginate(this.posts);
-    },
-  },
-  watch: {
-    posts() {
-      this.setPages();
-    },
-  },
-  created() {
-    this.getPosts();
-  },
-  filters: {
-    trimWords(value) {
-      return value.split(" ").splice(0, 20).join(" ") + "...";
-    },
-  },
+  async created() {
+    console.log("pageitems", this.pageItemsCount)
+  }
 };
 </script>
+
