@@ -1,6 +1,8 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+// import '@/components';
+import './global-components'
 
 Vue.config.productionTip = false
 

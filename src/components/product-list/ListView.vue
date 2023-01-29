@@ -1,5 +1,5 @@
 <template>
-  <div id="product_list" class="tab_pane">
+  <div id="product_list" class="tab_pane active show">
     <div class="product__section--inner product__section--style3__inner">
       <div class="row row-cols-1 mb--n30">
         <ListProductItem

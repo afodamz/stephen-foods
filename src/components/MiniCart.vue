@@ -80,8 +80,10 @@
                         class="minicart__conditions--link" href="privacy-policy.html">Privacy Policy</a></label>
             </div>
             <div class="minicart__button d-flex justify-content-center">
-                <a class="btn minicart__button--link" href="cart.html">View cart</a>
-                <a class="btn minicart__button--link" href="checkout.html">Checkout</a>
+                <router-link tag="a" class="btn minicart__button--link" to="/cart"
+                        >View cart</router-link>
+                <router-link tag="a" class="btn minicart__button--link" to="/checkout"
+                        >Checkout</router-link>
             </div>
         </div>
 </template>

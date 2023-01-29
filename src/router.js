@@ -1,7 +1,10 @@
 import Vue from 'vue';
 import Home from '@/pages/Home.vue'
 import Wishlist from '@/pages/Wishlist.vue'
-import Contact from '@/pages/Contact.vue'
+import Contact from '@/pages/Contact.vue';
+import Details from '@/pages/Details.vue';
+import Checkout from '@/pages/Checkout.vue';
+import ViewCart from '@/pages/ViewCart.vue';
 import PageNotFound from '@/pages/PageNotFound.vue'
 import Router from 'vue-router'
 import VueRouter from 'vue-router';
@@ -31,6 +34,21 @@ const routes = [
     path: '/contact',
     name: 'Contact',
     component: Contact
+  },
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: Checkout
+  },
+  {
+    path: '/cart',
+    name: 'cart',
+    component: ViewCart
+  },
+  {
+    path: '/details/:id',
+    name: 'Details',
+    component: Details
   },
   // {
   //   path: '*',

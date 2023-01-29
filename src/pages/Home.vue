@@ -93,7 +93,7 @@
               <label class="product__view--label">Prev Page :</label>
               <div class="select shop__header--select">
                 <select v-model="selectPerPage" class="product__view--select">
-                  <option v-for="option in options" :value="option.value">
+                  <option v-for="option in options" v-bind:key="option.value" :value="option.value">
                     {{ option.text }}
                   </option>
                 </select>
@@ -322,7 +322,7 @@
               </div>
               <Pagination
                 :pageItemsCount="pageItemsCount"
-                :perPage="perPage"
+                :perPage="selectPerPage"
                 :page="currentPage"
                 @changePage="changePage"
               />
@@ -442,19 +442,18 @@ export default {
       products: [],
       showGridProducts: true,
       showListProducts: false,
-      perPage: 12,
-      selectPerPage: "20",
+      selectPerPage: 20,
       options: [
-        { text: "20", value: "20" },
-        { text: "25", value: "25" },
-        { text: "30", value: "30" },
-        { text: "35", value: "35" },
-        { text: "40", value: "40" },
+        { text: "20", value: 20 },
+        { text: "25", value: 25 },
+        { text: "30", value: 30 },
+        { text: "35", value: 35 },
+        { text: "40", value: 40 },
       ],
       currentPage: 1,
       indexOfLastItems: 0,
       indexOfFirstItems: 0,
-      pageItemsCount: [],
+      pageItemsCount: 0,
       allProducts: [],
       loading: false,
     };
@@ -472,6 +471,7 @@ export default {
       this.showListProducts = false;
     },
     showList: function () {
+      console.log("going to show")
       this.showGridProducts = false;
       this.showListProducts = true;
     },
@@ -484,8 +484,8 @@ export default {
       } else {
         this.currentPage = convertToNumber;
       }
-      this.indexOfLastItems = this.currentPage * this.perPage;
-      this.indexOfFirstItems = this.indexOfLastItems - this.perPage;
+      this.indexOfLastItems = this.currentPage * this.selectPerPage;
+      this.indexOfFirstItems = this.indexOfLastItems - this.selectPerPage;
       this.products = this.allProducts.slice(
         this.indexOfFirstItems,
         this.indexOfLastItems
@@ -500,8 +500,8 @@ export default {
           this.loading = false;
           this.allProducts = data;
           this.pageItemsCount = data.length;
-          this.indexOfLastItems = this.currentPage * this.perPage;
-          this.indexOfFirstItems = this.indexOfLastItems - this.perPage;
+          this.indexOfLastItems = this.currentPage * this.selectPerPage;
+          this.indexOfFirstItems = this.indexOfLastItems - this.selectPerPage;
           this.products = data.slice(
             this.indexOfFirstItems,
             this.indexOfLastItems

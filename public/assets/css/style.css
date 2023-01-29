@@ -5620,7 +5620,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .product__items2 {
     -webkit-box-shadow: 0 2px 22px rgba(0, 0, 0, .16);
-    box-shadow: 0 2px 22px rgba(0, 0, 0, .16)
+    box-shadow: 0 2px 22px rgba(0, 0, 0, .16);
 }
 
 .product__items2--content {

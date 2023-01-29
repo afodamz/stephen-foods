@@ -153,7 +153,7 @@
         <!-- cart section end -->
 
         <!-- Start product section -->
-        <section class="product__section product__section--style3 section--padding pt-0">
+        <!-- <section class="product__section product__section--style3 section--padding pt-0">
             <div class="container">
                 <div class="section__heading3 mb-40">
                     <h2 class="section__heading3--maintitle">New Products</h2>
@@ -732,7 +732,7 @@
                     <div class="swiper__nav--btn swiper-button-prev"></div>
                 </div>
             </div>
-        </section>
+        </section> -->
         <!-- End product section -->
 
     </div>

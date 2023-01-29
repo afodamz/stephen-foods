@@ -1,12 +1,12 @@
 <template>
   <div :class="{'offCanvas__minicart_active':modal}">
     <!-- <Loader v-if=`!['Home',].includes($route.name)`/> -->
-    <Header @showModal="addTask" ></Header>
-    <main class="main__content_wrapper">
+    <Header @showModal="addTask" v-if="!['Checkout'].includes($route.name)"></Header>
+    <main class="main__content_wrapper" >
       <router-view></router-view>
-    <Shipping ></Shipping>
+    <Shipping v-if="!['Checkout'].includes($route.name)" ></Shipping>
     </main>
-    <Footer></Footer>
+    <Footer v-if="!['Checkout'].includes($route.name)"></Footer>
     <div class="newsletter__popup" data-animation="slideInUp">
       <div id="boxes" class="newsletter__popup--inner">
         <button

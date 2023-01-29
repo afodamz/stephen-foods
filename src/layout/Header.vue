@@ -97,9 +97,6 @@
                     Contact
                   </router-link>
                 </li>
-                <li class="header__menu--items">
-                  <a class="header__menu--link" href="contact.html">Contact </a>
-                </li>
               </ul>
             </nav>
           </div>
@@ -121,6 +118,7 @@
                 <a
                   class="header__account--btn search__open--btn"
                   href="javascript:void(0)"
+                  @click="showModalSearchFunc"
                   data-offcanvas
                 >
                   <svg
@@ -285,11 +283,6 @@
                       Contact
                     </router-link>
                   </li>
-                  <li class="header__menu--items">
-                    <a class="header__menu--link text-white" href="contact.html"
-                      >Contact
-                    </a>
-                  </li>
                 </ul>
               </nav>
             </div>
@@ -302,7 +295,7 @@
     <div class="offcanvas__stikcy--toolbar">
       <ul class="d-flex justify-content-between">
         <li class="offcanvas__stikcy--toolbar__list">
-          <a class="offcanvas__stikcy--toolbar__btn" href="index-2.html">
+          <a class="offcanvas__stikcy--toolbar__btn" href="/">
             <span class="offcanvas__stikcy--toolbar__icon">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -321,27 +314,10 @@
           </a>
         </li>
         <li class="offcanvas__stikcy--toolbar__list">
-          <a class="offcanvas__stikcy--toolbar__btn" href="shop.html">
-            <span class="offcanvas__stikcy--toolbar__icon">
-              <svg
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-                width="18.51"
-                height="17.443"
-                viewBox="0 0 448 512"
-              >
-                <path
-                  d="M416 32H32A32 32 0 0 0 0 64v384a32 32 0 0 0 32 32h384a32 32 0 0 0 32-32V64a32 32 0 0 0-32-32zm-16 48v152H248V80zm-200 0v152H48V80zM48 432V280h152v152zm200 0V280h152v152z"
-                ></path>
-              </svg>
-            </span>
-            <span class="offcanvas__stikcy--toolbar__label">Shop</span>
-          </a>
-        </li>
-        <li class="offcanvas__stikcy--toolbar__list">
           <a
             class="offcanvas__stikcy--toolbar__btn search__open--btn"
             href="javascript:void(0)"
+            @click="showModalSearchFunc"
             data-offcanvas
           >
             <span class="offcanvas__stikcy--toolbar__icon">
@@ -375,6 +351,7 @@
           <a
             class="offcanvas__stikcy--toolbar__btn minicart__open--btn"
             href="javascript:void(0)"
+            @click="showMiniCartFunc"
             data-offcanvas
           >
             <span class="offcanvas__stikcy--toolbar__icon">
@@ -430,81 +407,24 @@
     <!-- End offCanvas minicart -->
 
     <!-- Start serch box area -->
-    <div class="predictive__search--box">
-      <div class="predictive__search--box__inner">
-        <h2 class="predictive__search--title">Search Products</h2>
-        <form class="predictive__search--form" action="#">
-          <label>
-            <input
-              class="predictive__search--input"
-              placeholder="Search Here"
-              type="text"
-            />
-          </label>
-          <button class="predictive__search--button" aria-label="search button">
-            <svg
-              class="product__items--action__btn--svg"
-              xmlns="http://www.w3.org/2000/svg"
-              width="30.51"
-              height="25.443"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"
-                fill="none"
-                stroke="currentColor"
-                stroke-miterlimit="10"
-                stroke-width="32"
-              />
-              <path
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-miterlimit="10"
-                stroke-width="32"
-                d="M338.29 338.29L448 448"
-              />
-            </svg>
-          </button>
-        </form>
-      </div>
-      <button
-        class="predictive__search--close__btn"
-        aria-label="search close"
-        data-offcanvas
-      >
-        <svg
-          class="predictive__search--close__icon"
-          xmlns="http://www.w3.org/2000/svg"
-          width="40.51"
-          height="30.443"
-          viewBox="0 0 512 512"
-        >
-          <path
-            fill="currentColor"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-            d="M368 368L144 144M368 144L144 368"
-          />
-        </svg>
-      </button>
-    </div>
+    <ModalSearch :active="showSearchModal" :closeModalSearch="closeModalSearch"/>
     <!-- End serch box area -->
   </header>
 </template>
   
   <script>
 import MiniCart from "@/components/MiniCart.vue";
+import ModalSearch from "@/components/Search.vue";
 export default {
   name: "Header",
   components: {
     MiniCart,
+    ModalSearch
   },
   data() {
     return {
       showMinicart: false,
+      showSearchModal: false,
     };
   },
   methods: {
@@ -515,6 +435,14 @@ export default {
     closeMinicart: function () {
       this.showMinicart = false;
       this.$emit("showModal", this.showMinicart);
+    },
+    showModalSearchFunc: function () {
+      this.showSearchModal = true;
+      this.$emit("showModal", this.showSearchModal);
+    },
+    closeModalSearch: function () {
+      this.showSearchModal = false;
+      this.$emit("showModal", this.showSearchModal);
     },
   },
 };
