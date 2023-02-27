@@ -1,7 +1,8 @@
 <template>
-  <div :class="{'offCanvas__minicart_active':modal}">
+  <div :class="{'offCanvas__minicart_active':systemModal}">
     <!-- <Loader v-if=`!['Home',].includes($route.name)`/> -->
-    <Header @showModal="addTask" v-if="!['Checkout'].includes($route.name)"></Header>
+    <!-- <Header @showModal="addTask" v-if="!['Checkout'].includes($route.name)"></Header> -->
+    <Header v-if="!['Checkout'].includes($route.name)"></Header>
     <main class="main__content_wrapper" >
       <router-view></router-view>
     <Shipping v-if="!['Checkout'].includes($route.name)" ></Shipping>
@@ -96,7 +97,8 @@ import swiper from '../public/assets/js/plugins/swiper-bundle.min.js'
 import Header from "@/layout/Header.vue";
 import Footer from "@/layout/Footer.vue";
 import Loader from "@/layout/Loader.vue";
-import Shipping from "@/components/Shipping.vue"
+import Shipping from "@/components/Shipping.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -110,6 +112,9 @@ export default {
     return {
       modal: false,
     };
+  },
+  computed: {
+    ...mapGetters(["systemModal"]),
   },
   methods:{
     addTask(modal){

@@ -25,7 +25,8 @@
         </div>
         <ul class="product__items--action">
           <li class="product__items--action__list">
-            <a class="product__items--action__btn" href="#">
+            <!-- <a class="product__items--action__btn" @click="ADD_PRODUCT_TO_CART(product, 1)" href="#"> -->
+            <a class="product__items--action__btn" @click="addtoWishlist" >
               <svg
                 class="product__items--action__btn--svg"
                 xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +104,7 @@
         </ul>
       </div>
       <div class="product__items--content product__items2--content text-center">
-        <a class="add__to--cart__btn" href="#">+ Add to cart</a>
+        <a class="add__to--cart__btn" @click="addtoCart">+ Add to cart</a>
         <h3 class="product__items--content__title h4">
           <a href="/details">{{ product.name }}</a>
         </h3>
@@ -148,16 +149,25 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "GridProductItem",
   props: {
     product: Object
   },
   methods: {
+    ...mapActions(["ADD_PRODUCT_TO_CART", "ADD_PRODUCT_TO_WISHLIST"]),
     async convertImage(){
       console.log("images", this.product.images)
       let images = JSON.parse(this.product.images);
       this.product.images = images;
+    },
+    addtoCart(){
+      this.ADD_PRODUCT_TO_CART({product: this.product, quantity: 1})
+    },
+    addtoWishlist(){
+      this.ADD_PRODUCT_TO_WISHLIST(this.product)
     }
   },
   async created(){

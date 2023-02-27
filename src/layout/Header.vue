@@ -3,13 +3,7 @@
     <div class="main__header header__sticky">
       <div class="container">
         <div
-          class="
-            main__header--inner
-            position__relative
-            d-flex
-            justify-content-between
-            align-items-center
-          "
+          class="main__header--inner position__relative d-flex justify-content-between align-items-center"
         >
           <div class="offcanvas__header--menu__open">
             <a
@@ -49,11 +43,7 @@
             </router-link>
           </div>
           <div
-            class="
-              header__search--widget
-              d-none d-lg-block
-              header__sticky--none
-            "
+            class="header__search--widget d-none d-lg-block header__sticky--none"
           >
             <form class="d-flex header__search--form" action="#">
               <div class="header__select--categories select">
@@ -109,11 +99,7 @@
                                 </a>
                             </li> -->
               <li
-                class="
-                  header__account--items header__account--search__items
-                  mobile__d--block
-                  d-sm-2-none
-                "
+                class="header__account--items header__account--search__items mobile__d--block d-sm-2-none"
               >
                 <a
                   class="header__account--btn search__open--btn"
@@ -183,7 +169,7 @@
                       </g>
                     </g>
                   </svg>
-                  <span class="items__count">3</span>
+                  <span class="items__count">{{ cartItems.length }}</span>
                 </a>
               </li>
               <li class="header__account--items d-none d-lg-block">
@@ -205,7 +191,7 @@
                       fill="currentColor"
                     />
                   </svg>
-                  <span class="items__count">3</span>
+                  <span class="items__count">{{ likedItems.length }}</span>
                   <!-- </a> -->
                 </router-link>
               </li>
@@ -249,20 +235,10 @@
     <div class="header__bottom bg__secondary">
       <div class="container">
         <div
-          class="
-            header__bottom--inner
-            position__relative
-            d-flex
-            align-items-center
-          "
+          class="header__bottom--inner position__relative d-flex align-items-center"
         >
           <div
-            class="
-              header__right--area
-              d-flex
-              justify-content-between
-              align-items-center
-            "
+            class="header__right--area d-flex justify-content-between align-items-center"
           >
             <div class="header__menu">
               <nav class="header__menu--navigation">
@@ -369,7 +345,7 @@
               </svg>
             </span>
             <span class="offcanvas__stikcy--toolbar__label">Cart</span>
-            <span class="items__count">3</span>
+            <span class="items__count">{{ cartItems.length }}</span>
           </a>
         </li>
         <li class="offcanvas__stikcy--toolbar__list">
@@ -394,7 +370,7 @@
               </svg>
             </span>
             <span class="offcanvas__stikcy--toolbar__label">Wishlist</span>
-            <span class="items__count">3</span>
+            <span class="items__count">{{ cartItems.length }}</span>
           </router-link>
         </li>
       </ul>
@@ -403,11 +379,14 @@
 
     <!-- Start offCanvas minicart -->
     <!-- <MiniCart /> -->
-    <MiniCart :active="showMinicart" :closeMinicart="closeMinicart"/>
+    <MiniCart :active="showMinicart" :closeMinicart="closeMinicart" />
     <!-- End offCanvas minicart -->
 
     <!-- Start serch box area -->
-    <ModalSearch :active="showSearchModal" :closeModalSearch="closeModalSearch"/>
+    <ModalSearch
+      :active="showSearchModal"
+      :closeModalSearch="closeModalSearch"
+    />
     <!-- End serch box area -->
   </header>
 </template>
@@ -415,11 +394,16 @@
   <script>
 import MiniCart from "@/components/MiniCart.vue";
 import ModalSearch from "@/components/Search.vue";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "Header",
   components: {
     MiniCart,
-    ModalSearch
+    ModalSearch,
+  },
+  computed: {
+    ...mapGetters(["systemModal", "cartItems", "likedItems"]),
   },
   data() {
     return {
@@ -428,21 +412,26 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["showOrHiddenModal"]),
     showMiniCartFunc: function () {
       this.showMinicart = true;
-      this.$emit("showModal", this.showMinicart);
+      // this.$emit("showModal", this.showMinicart);
+      this.showOrHiddenModal();
     },
     closeMinicart: function () {
       this.showMinicart = false;
-      this.$emit("showModal", this.showMinicart);
+      // this.$emit("showModal", this.showMinicart);
+      this.showOrHiddenModal();
     },
     showModalSearchFunc: function () {
       this.showSearchModal = true;
-      this.$emit("showModal", this.showSearchModal);
+      // this.$emit("showModal", this.showSearchModal);
+      this.showOrHiddenModal();
     },
     closeModalSearch: function () {
       this.showSearchModal = false;
-      this.$emit("showModal", this.showSearchModal);
+      // this.$emit("showModal", this.showSearchModal);
+      this.showOrHiddenModal();
     },
   },
 };

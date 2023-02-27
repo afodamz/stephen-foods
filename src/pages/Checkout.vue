@@ -228,55 +228,21 @@
                     <div class="cart__table checkout__product--table">
                         <table class="cart__table--inner">
                             <tbody class="cart__table--body">
-                                <tr class="cart__table--body__items">
+                                <tr v-for="cartItem in cartItems" :key="cartItem.id"  class="cart__table--body__items">
                                     <td class="cart__table--body__list">
                                         <div class="product__image two  d-flex align-items-center">
                                             <div class="product__thumbnail border-radius-5">
                                                 <a href="product-details.html"><img class="border-radius-5" src="assets/img/product/small-product7.png" alt="cart-product"></a>
-                                                <span class="product__thumbnail--quantity">1</span>
+                                                <span class="product__thumbnail--quantity">{{Number(cartItem.quantity)}}</span>
                                             </div>
                                             <div class="product__description">
-                                                <h3 class="product__description--name h4"><a href="product-details.html">Fresh-whole-fish</a></h3>
-                                                <span class="product__description--variant">COLOR: Blue</span>
+                                                <h3 class="product__description--name h4"><a href="product-details.html">{{cartItem.name}}</a></h3>
+                                                <!-- <span class="product__description--variant">COLOR: Blue</span> -->
                                             </div>
                                         </div>
                                     </td>
                                     <td class="cart__table--body__list">
-                                        <span class="cart__price">£65.00</span>
-                                    </td>
-                                </tr>
-                                <tr class="cart__table--body__items">
-                                    <td class="cart__table--body__list">
-                                        <div class="cart__product d-flex align-items-center">
-                                            <div class="product__thumbnail border-radius-5">
-                                                <a href="product-details.html"><img class="border-radius-5" src="assets/img/product/small-product2.png" alt="cart-product"></a>
-                                                <span class="product__thumbnail--quantity">1</span>
-                                            </div>
-                                            <div class="product__description">
-                                                <h3 class="product__description--name h4"><a href="product-details.html">Vegetable-healthy</a></h3>
-                                                <span class="product__description--variant">COLOR: Green</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__table--body__list">
-                                        <span class="cart__price">£82.00</span>
-                                    </td>
-                                </tr>
-                                <tr class="cart__table--body__items">
-                                    <td class="cart__table--body__list">
-                                        <div class="cart__product d-flex align-items-center">
-                                            <div class="product__thumbnail border-radius-5">
-                                                <a href="product-details.html"><img class="border-radius-5" src="assets/img/product/small-product4.png" alt="cart-product"></a>
-                                                <span class="product__thumbnail--quantity">1</span>
-                                            </div>
-                                            <div class="product__description">
-                                                <h3 class="product__description--name h4"><a href="product-details.html">Raw-onions-surface</a></h3>
-                                                <span class="product__description--variant">COLOR: White</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__table--body__list">
-                                        <span class="cart__price">£78.00</span>
+                                        <span class="cart__price">${{Number(cartItem.price) * Number(cartItem.quantity)}}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -292,7 +258,7 @@
                     </div>
                     <div class="checkout__total">
                         <table class="checkout__total--table">
-                            <tbody class="checkout__total--body">
+                            <!-- <tbody class="checkout__total--body">
                                 <tr class="checkout__total--items">
                                     <td class="checkout__total--title text-left">Subtotal </td>
                                     <td class="checkout__total--amount text-right">$860.00</td>
@@ -301,11 +267,11 @@
                                     <td class="checkout__total--title text-left">Shipping</td>
                                     <td class="checkout__total--calculated__text text-right">Calculated at next step</td>
                                 </tr>
-                            </tbody>
+                            </tbody> -->
                             <tfoot class="checkout__total--footer">
                                 <tr class="checkout__total--footer__items">
                                     <td class="checkout__total--footer__title checkout__total--footer__list text-left">Total </td>
-                                    <td class="checkout__total--footer__amount checkout__total--footer__list text-right">$860.00</td>
+                                    <td class="checkout__total--footer__amount checkout__total--footer__list text-right">${{(cartItems.reduce(function (acc, obj) { return acc + obj.totalPrice; }, 0)).toLocaleString('en-US')}}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -317,7 +283,24 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "Checkout",
+  computed: {
+    ...mapGetters(["cartItems"]),
+  },
+  methods: {
+    ...mapActions(["UPDATE_CART_ITEM_QUANTITY", "REMOVE_FROM_CART", ]),
+    removeCartItem(product){
+        this.REMOVE_FROM_CART(product);
+    },
+    updateCartItemQty(product, quantity){
+        this.UPDATE_CART_ITEM_QUANTITY({cartItem: product, quantity: quantity});
+    },
+  },
+  mounted() {
+    console.log("active", this.active);
+  },
 };
 </script>

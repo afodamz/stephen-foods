@@ -23,14 +23,7 @@
     <section class="shop__section section--padding">
       <div class="container-fluid">
         <div
-          class="
-            shop__header
-            bg__gray--color
-            d-flex
-            align-items-center
-            justify-content-between
-            mb-30
-          "
+          class="shop__header bg__gray--color d-flex align-items-center justify-content-between mb-30"
         >
           <button
             class="widget__filter--btn d-flex d-lg-none align-items-center"
@@ -84,27 +77,23 @@
           </button>
           <div class="product__view--mode d-flex align-items-center">
             <div
-              class="
-                product__view--mode__list product__short--by
-                align-items-center
-                d-lg-flex d-none
-              "
+              class="product__view--mode__list product__short--by align-items-center d-lg-flex d-none"
             >
               <label class="product__view--label">Prev Page :</label>
               <div class="select shop__header--select">
                 <select v-model="selectPerPage" class="product__view--select">
-                  <option v-for="option in options" v-bind:key="option.value" :value="option.value">
+                  <option
+                    v-for="option in options"
+                    v-bind:key="option.value"
+                    :value="option.value"
+                  >
                     {{ option.text }}
                   </option>
                 </select>
               </div>
             </div>
             <div
-              class="
-                product__view--mode__list product__short--by
-                align-items-center
-                d-none d-lg-flex
-              "
+              class="product__view--mode__list product__short--by align-items-center d-none d-lg-flex"
             >
               <label class="product__view--label">Sort By :</label>
               <div class="select shop__header--select">
@@ -118,11 +107,7 @@
             </div>
             <div class="product__view--mode__list">
               <div
-                class="
-                  product__tab--one product__grid--column__buttons
-                  d-flex
-                  justify-content-center
-                "
+                class="product__tab--one product__grid--column__buttons d-flex justify-content-center"
               >
                 <button
                   class="product__grid--column__buttons--icons"
@@ -263,10 +248,7 @@
               </div>
             </div>
             <div
-              class="
-                product__view--mode__list product__view--search
-                d-xl-block d-none
-              "
+              class="product__view--mode__list product__view--search d-xl-block d-none"
             >
               <form class="product__view--search__form" action="#">
                 <label>
@@ -317,6 +299,7 @@
                 <div style="text-align: center">
                   <PulseLoader :loading="loading" />
                 </div>
+                <!-- <GridView v-show="showGridProducts" :products="storeProducts" /> -->
                 <GridView v-show="showGridProducts" :products="products" />
                 <ListView v-show="showListProducts" :products="products" />
               </div>
@@ -336,10 +319,7 @@
     <section class="banner__section section--padding pt-0">
       <div class="container">
         <div
-          class="
-            row row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1
-            mb--n30
-          "
+          class="row row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1 mb--n30"
         >
           <div class="col mb-30">
             <div class="banner__items position__relative">
@@ -434,12 +414,19 @@ import Pagination from "@/components/Pagination.vue";
 import Testimonial from "@/components/Testimonials.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import axios from "axios";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Home",
+  computed: {
+    ...mapGetters(["storeProducts"]),
+  },
+  // computed: mapGetters({
+  //   products: "storeProducts"}),
   data() {
     return {
       products: [],
+      // products: this.$store.state.products,
       showGridProducts: true,
       showListProducts: false,
       selectPerPage: 20,
@@ -455,7 +442,7 @@ export default {
       indexOfFirstItems: 0,
       pageItemsCount: 0,
       allProducts: [],
-      loading: false,
+      loading: true,
     };
   },
   components: {
@@ -471,7 +458,6 @@ export default {
       this.showListProducts = false;
     },
     showList: function () {
-      console.log("going to show")
       this.showGridProducts = false;
       this.showListProducts = true;
     },
@@ -491,25 +477,16 @@ export default {
         this.indexOfLastItems
       );
     },
+    ...mapActions(["getProducts"]),
     async fetchProducts() {
-      this.loading = true;
-      axios
-        .get(`http://localhost:8086/products`)
-        .then((response) => {
-          var data = response.data['data'];
-          this.loading = false;
-          this.allProducts = data;
-          this.pageItemsCount = data.length;
-          this.indexOfLastItems = this.currentPage * this.selectPerPage;
-          this.indexOfFirstItems = this.indexOfLastItems - this.selectPerPage;
-          this.products = data.slice(
-            this.indexOfFirstItems,
-            this.indexOfLastItems
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      const getData = await this.getProducts();
+      console.log("getData", getData);
+      this.allProducts = getData;
+      this.pageItemsCount = getData.length;
+      this.indexOfLastItems = this.currentPage * this.selectPerPage;
+      this.indexOfFirstItems = this.indexOfLastItems - this.selectPerPage;
+      this.products = getData.slice(this.indexOfFirstItems, this.indexOfLastItems);
+      this.loading = false;
     },
   },
   async created() {
@@ -522,3 +499,4 @@ export default {
 <style scoped>
 </style>
   
+

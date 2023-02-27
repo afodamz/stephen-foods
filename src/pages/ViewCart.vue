@@ -34,139 +34,44 @@
                                             </tr>
                                         </thead>
                                         <tbody class="cart__table--body">
-                                            <tr class="cart__table--body__items">
+                                            <tr v-for="cartItem in cartItems" :key="cartItem.id" class="cart__table--body__items">
                                                 <td class="cart__table--body__list">
                                                     <div class="cart__product d-flex align-items-center">
-                                                        <button class="cart__remove--btn" aria-label="search button" type="button">
+                                                        <button class="cart__remove--btn" aria-label="search button" @click="removeCartItem(cartItem)" type="button">
                                                             <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="16px" height="16px"><path d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z"/></svg>
                                                         </button>
                                                         <div class="cart__thumbnail">
                                                             <a href="product-details.html"><img class="border-radius-5" src="assets/img/product/product1.png" alt="cart-product"></a>
                                                         </div>
                                                         <div class="cart__content">
-                                                            <h3 class="cart__content--title h4"><a href="product-details.html">Fresh-whole-fish</a></h3>
-                                                            <span class="cart__content--variant">COLOR: Blue</span>
-                                                            <span class="cart__content--variant">WEIGHT: 2 Kg</span>
+                                                            <h3 class="cart__content--title h4"><a href="product-details.html">{{cartItem.name}}</a></h3>
+                                                            <!-- <span class="cart__content--variant">COLOR: Blue</span>
+                                                            <span class="cart__content--variant">WEIGHT: 2 Kg</span> -->
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td class="cart__table--body__list">
-                                                    <span class="cart__price">£65.00</span>
+                                                    <span class="cart__price">${{Number(cartItem.price)}}</span>
                                                 </td>
                                                 <td class="cart__table--body__list">
                                                     <div class="quantity__box">
-                                                        <button type="button" class="quantity__value quickview__value--quantity decrease" aria-label="quantity value" value="Decrease Value">-</button>
+                                                        <button type="button" class="quantity__value quickview__value--quantity decrease" aria-label="quantity value" :disabled="Number(cartItem.quantity) == 1"
+                @click="updateCartItemQty(cartItem, Number(cartItem.quantity)-1)" value="Decrease Value">-</button>
                                                         <label>
-                                                            <input type="number" class="quantity__number quickview__value--number" value="1" data-counter />
+                                                            <input type="number" class="quantity__number quickview__value--number" value="1" data-counter :value="cartItem.quantity"/>
                                                         </label>
-                                                        <button type="button" class="quantity__value quickview__value--quantity increase" aria-label="quantity value" value="Increase Value">+</button>
+                                                        <button type="button" class="quantity__value quickview__value--quantity increase"  @click="updateCartItemQty(cartItem, Number(cartItem.quantity)+1)" aria-label="quantity value" value="Increase Value">+</button>
                                                     </div>
                                                 </td>
                                                 <td class="cart__table--body__list">
-                                                    <span class="cart__price end">£130.00</span>
-                                                </td>
-                                            </tr>
-                                            <tr class="cart__table--body__items">
-                                                <td class="cart__table--body__list">
-                                                    <div class="cart__product d-flex align-items-center">
-                                                        <button class="cart__remove--btn" aria-label="search button" type="button">
-                                                            <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="16px" height="16px"><path d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z"/></svg>
-                                                        </button>
-                                                        <div class="cart__thumbnail">
-                                                            <a href="product-details.html"><img class="border-radius-5" src="assets/img/product/product2.png" alt="cart-product"></a>
-                                                        </div>
-                                                        <div class="cart__content">
-                                                            <h3 class="cart__content--title h4"><a href="product-details.html">Vegetable-healthy</a></h3>
-                                                            <span class="cart__content--variant">COLOR: Blue</span>
-                                                            <span class="cart__content--variant">WEIGHT: 2 Kg</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="cart__table--body__list">
-                                                    <span class="cart__price">£65.00</span>
-                                                </td>
-                                                <td class="cart__table--body__list">
-                                                    <div class="quantity__box">
-                                                        <button type="button" class="quantity__value quickview__value--quantity decrease" aria-label="quantity value" value="Decrease Value">-</button>
-                                                        <label>
-                                                            <input type="number" class="quantity__number quickview__value--number" value="1" data-counter />
-                                                        </label>
-                                                        <button type="button" class="quantity__value quickview__value--quantity increase" aria-label="quantity value" value="Increase Value">+</button>
-                                                    </div>
-                                                </td>
-                                                <td class="cart__table--body__list">
-                                                    <span class="cart__price end">£130.00</span>
-                                                </td>
-                                            </tr>
-                                            <tr class="cart__table--body__items">
-                                                <td class="cart__table--body__list">
-                                                    <div class="cart__product d-flex align-items-center">
-                                                        <button class="cart__remove--btn" aria-label="search button" type="button">
-                                                            <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="16px" height="16px"><path d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z"/></svg>
-                                                        </button>
-                                                        <div class="cart__thumbnail">
-                                                            <a href="product-details.html"><img class="border-radius-5" src="assets/img/product/product3.png" alt="cart-product"></a>
-                                                        </div>
-                                                        <div class="cart__content">
-                                                            <h3 class="cart__content--title h4"><a href="product-details.html">Raw-onions-surface</a></h3>
-                                                            <span class="cart__content--variant">COLOR: Blue</span>
-                                                            <span class="cart__content--variant">WEIGHT: 2 Kg</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="cart__table--body__list">
-                                                    <span class="cart__price">£65.00</span>
-                                                </td>
-                                                <td class="cart__table--body__list">
-                                                    <div class="quantity__box">
-                                                        <button type="button" class="quantity__value quickview__value--quantity decrease" aria-label="quantity value" value="Decrease Value">-</button>
-                                                        <label>
-                                                            <input type="number" class="quantity__number quickview__value--number" value="1" data-counter />
-                                                        </label>
-                                                        <button type="button" class="quantity__value quickview__value--quantity increase" aria-label="quantity value" value="Increase Value">+</button>
-                                                    </div>
-                                                </td>
-                                                <td class="cart__table--body__list">
-                                                    <span class="cart__price end">£130.00</span>
-                                                </td>
-                                            </tr>
-                                            <tr class="cart__table--body__items">
-                                                <td class="cart__table--body__list">
-                                                    <div class="cart__product d-flex align-items-center">
-                                                        <button class="cart__remove--btn" aria-label="search button" type="button">
-                                                            <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="16px" height="16px"><path d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z"/></svg>
-                                                        </button>
-                                                        <div class="cart__thumbnail">
-                                                            <a href="product-details.html"><img class="border-radius-5" src="assets/img/product/product4.png" alt="cart-product"></a>
-                                                        </div>
-                                                        <div class="cart__content">
-                                                            <h3 class="cart__content--title h4"><a href="product-details.html">Red-tomato-isolated</a></h3>
-                                                            <span class="cart__content--variant">COLOR: Blue</span>
-                                                            <span class="cart__content--variant">WEIGHT: 2 Kg</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="cart__table--body__list">
-                                                    <span class="cart__price">£65.00</span>
-                                                </td>
-                                                <td class="cart__table--body__list">
-                                                    <div class="quantity__box">
-                                                        <button type="button" class="quantity__value quickview__value--quantity decrease" aria-label="quantity value" value="Decrease Value">-</button>
-                                                        <label>
-                                                            <input type="number" class="quantity__number quickview__value--number" value="1" data-counter />
-                                                        </label>
-                                                        <button type="button" class="quantity__value quickview__value--quantity increase" aria-label="quantity value" value="Increase Value">+</button>
-                                                    </div>
-                                                </td>
-                                                <td class="cart__table--body__list">
-                                                    <span class="cart__price end">£130.00</span>
+                                                    <span class="cart__price end">${{Number(cartItem.price) * Number(cartItem.quantity)}}</span>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table> 
                                     <div class="continue__shopping d-flex justify-content-between">
                                         <a class="continue__shopping--link" href="shop.html">Continue shopping</a>
-                                        <button class="continue__shopping--clear" type="submit">Clear Cart</button>
+                                        <button @click="clearCart" class="continue__shopping--clear" type="submit">Clear Cart</button>
                                     </div>
                                 </div>
                             </div>
@@ -190,13 +95,13 @@
                                     <div class="cart__summary--total mb-20">
                                         <table class="cart__summary--total__table">
                                             <tbody>
-                                                <tr class="cart__summary--total__list">
+                                                <!-- <tr class="cart__summary--total__list">
                                                     <td class="cart__summary--total__title text-left">SUBTOTAL</td>
                                                     <td class="cart__summary--amount text-right">$860.00</td>
-                                                </tr>
+                                                </tr> -->
                                                 <tr class="cart__summary--total__list">
                                                     <td class="cart__summary--total__title text-left">GRAND TOTAL</td>
-                                                    <td class="cart__summary--amount text-right">$860.00</td>
+                                                    <td class="cart__summary--amount text-right">${{(cartItems.reduce(function (acc, obj) { return acc + obj.totalPrice; }, 0)).toLocaleString('en-US')}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -226,7 +131,27 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "ViewCart",
+  computed: {
+    ...mapGetters(["cartItems"]),
+  },
+  methods: {
+    ...mapActions(["UPDATE_CART_ITEM_QUANTITY", "REMOVE_FROM_CART", "CLEAR_CART"]),
+    removeCartItem(product){
+        this.REMOVE_FROM_CART(product);
+    },
+    updateCartItemQty(product, quantity){
+        this.UPDATE_CART_ITEM_QUANTITY({cartItem: product, quantity: quantity});
+    },
+    clearCart(){
+        this.CLEAR_CART();
+    },
+  },
+  mounted() {
+    console.log("active", this.active);
+    // Use the parent function directly here
+  },
 };
 </script>
