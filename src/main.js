@@ -4,8 +4,13 @@ import router from './router';
 // import '@/components';
 import './global-components';
 import {CartService} from "@/services/local/cart.service";
+import Toasted from 'vue-toasted';
+import VueCarousel from 'vue-carousel';
 
 import store from './store'
+
+Vue.use(VueCarousel);
+Vue.use(Toasted);
 
 Vue.config.productionTip = false
 

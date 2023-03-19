@@ -600,11 +600,10 @@
           </div>
         </vue-slick-carousel> -->
         <!-- <carousel :per-page="4" :navigate-to="someLocalProperty" :mouse-drag="true"> -->
-        <Carousel
-        v-bind:value="slideValue" 
+        <carousel
         ref="carousel" 
         :loop="true" :scroll-per-page="true" :navigation-enabled="false" 
-        :pagination-enabled="false" :per-page="2"  
+        :pagination-enabled="false" :per-page="2.5"  
         :mouse-drag="true" >
           <slide>
             <div class="testimonial__items d-flex align-items-center" >
@@ -1082,13 +1081,7 @@
             </div>
           </div>
           </slide>
-        </Carousel>
-        <VueSlickCarousel :arrows="true" :dots="true">
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-    </VueSlickCarousel>
+        </carousel>
         <!-- <div class="swiper__nav--btn swiper-button-next"></div>
           <div class="swiper__nav--btn swiper-button-prev"></div> -->
       </div>
@@ -1097,17 +1090,8 @@
 </template>
 
 <script>
-import { Carousel, Slide } from 'vue-carousel';
-import VueSlickCarousel from 'vue-slick-carousel'
-  // optional style for arrows & dots
-  import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 export default {
   name: "Testimonial",
-  componets: {
-    // VueSlickCarousel,
-    Carousel,
-    VueSlickCarousel
-  },
   data() {
     return {
       settings: {

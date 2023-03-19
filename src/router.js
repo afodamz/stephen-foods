@@ -8,7 +8,9 @@ import ViewCart from '@/pages/ViewCart.vue';
 import PageNotFound from '@/pages/PageNotFound.vue'
 import Router from 'vue-router'
 import VueRouter from 'vue-router';
-
+import LoginRegister from '@/pages/LoginRegister.vue';
+import Account from '@/pages/Account.vue';
+import ForgotPassword from '@/pages/ForgotPassword.vue' 
 
 Vue.use(Router)
 const routes = [
@@ -49,6 +51,30 @@ const routes = [
     path: '/details/:id',
     name: 'Details',
     component: Details
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginRegister
+    // component: () => import('@/pages/PageNotFound.vue')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: LoginRegister
+    // component: () => import('@/pages/PageNotFound.vue')
+  },
+  {
+    path: '/reset_password',
+    name: 'reset_password',
+    component: ForgotPassword
+    // component: () => import('@/pages/PageNotFound.vue')
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: Account
+    // component: () => import('@/pages/PageNotFound.vue')
   },
   // {
   //   path: '*',

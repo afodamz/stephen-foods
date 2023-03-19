@@ -7572,7 +7572,7 @@ input[type=number]::-webkit-outer-spin-button {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
         -ms-flex-direction: column;
-        flex-direction: column
+        flex-direction: column;
     }
 }
 
@@ -7584,7 +7584,8 @@ input[type=number]::-webkit-outer-spin-button {
 
 @media only screen and (min-width:1400px) and (max-width:1600px) {
     .testimonial__items {
-        padding: 25px 18px
+        padding: 25px 18px;
+        margin-right: 1em;
     }
 }
 
