@@ -11,7 +11,7 @@ const getters = {
 const actions = {
     async getProducts({ commit }) {
         const response = await axios
-            .get(`http://localhost:8086/products`)
+            .get(`${process.env.BACKEND_URL}}products`)
 
         var data = response.data['data'];
         commit('setProducts', data);

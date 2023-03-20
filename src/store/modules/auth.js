@@ -45,7 +45,7 @@ const actions = {
             UsersService.login(loginDto)
                 .then(({data}) => {
                     if (data.success) {
-                        context.commit(`notifications/${NotificationAction.SHOW_ALERT_SUCCESS}`, 'Logged in successfully', {root: true});
+                        context.commit(NotificationAction.SHOW_ALERT_SUCCESS, 'Logged in successfully', {root: true});
                         context.commit(AuthAction.IS_LOGGING_IN, false);
                         context.commit(AuthAction.IS_LOGGED_IN, true);
                         // append the token to the user object
