@@ -1,4 +1,5 @@
 import axios from "axios";
+import { JwtService } from "@/services/local/jwt.service";
 
 let cachedUser = {};
 export const setUser = (user) => {
@@ -23,26 +24,41 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 
-function fetchPage(path, query = {page: 1, page_size: 12}) {
-    return axiosInstance.get(`${path}?page=${query.page}&page_size=${query.page_size}`)
+function fetchPage(path, query = { page: 1, page_size: 12 }) {
+    return axios.get(`${path}?page=${query.page}&page_size=${query.page_size}`)
 }
 
 function get(path) {
-    return axiosInstance.get(path)
+    return axios.get(path)
+}
+
+function authGet(url) {
+    const AuthStr = 'Bearer '.concat(JwtService.getCacheValue('token'));
+    return axios.get(url, { headers: { Authorization: AuthStr } })
 }
 
 function post(path, data) {
-    return axiosInstance.post(path, data);
+    return axios.post(path, data);
 }
 
-function put(path) {
-
+function authPost(url, payload) {
+    console.log('payload',payload)
+    const AuthStr = 'Bearer '.concat(JwtService.getCacheValue('token'));
+    return axios.post(url, payload, { headers: { Authorization: AuthStr } })
 }
 
-function _delete(path) {
+function put(formData, url) {
+    const AuthStr = 'Bearer '.concat(JwtService.getCacheValue('token'));
+    return axios.put(url, formData, { headers: { Authorization: AuthStr } })
+    // .then((res) => res) //! the then and catch is done insdie actionFunction
+}
 
+function _delete(url) {
+    const AuthStr = 'Bearer '.concat(JwtService.getCacheValue('token'));
+    return axios.delete(url, { headers: { Authorization: AuthStr } })
+    //.then((res) => res)
 }
 
 export const AxiosService = {
-    axiosInstance, get, post, put, delete: _delete, setUser, fetchPage
+    axiosInstance, get, authGet, post, authPost, put, delete: _delete, setUser, fetchPage
 };

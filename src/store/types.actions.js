@@ -14,6 +14,11 @@ export const WishlistAction = {
     REMOVE_FROM_WISHLIST: 'REMOVE_FROM_WISHLIST'
 };
 
+export const OrderAction = {
+    GET_ORDERS: 'GET_ORDERS',
+    CREATE_ORDERS: 'CREATE_ORDERS',
+};
+
 export const AuthAction = {
     LOGIN: 'LOGIN',
     REGISTER: 'REGISTER',

@@ -191,7 +191,7 @@
                       fill="currentColor"
                     />
                   </svg>
-                  <span class="items__count">{{ likedItems.length }}</span>
+                  <span class="items__count">{{ wishlistItems.length }}</span>
                   <!-- </a> -->
                 </router-link>
               </li>
@@ -243,13 +243,13 @@
             <div class="header__menu">
               <nav class="header__menu--navigation">
                 <ul class="d-flex">
-                  <li class="header__menu--items">
+                  <!-- <li class="header__menu--items">
                     <div class="header__menu--link text-white">
                       <router-link to="/risk-info" target="_blank"
                         >Grills</router-link
                       >
                     </div>
-                  </li>
+                  </li> -->
                   <li class="header__menu--items">
                     <router-link
                       tag="a"
@@ -258,6 +258,20 @@
                     >
                       Contact
                     </router-link>
+                  </li>
+                  <li v-if="!isLoggedIn" class="header__menu--items">
+                    <router-link
+                      tag="a"
+                      class="header__menu--link text-white"
+                      to="/login"
+                    >
+                      Login/ Register
+                    </router-link>
+                  </li>
+                  <li v-if="isLoggedIn" class="header__menu--items">
+                    <a class="header__menu--link text-white" @click="logout">
+                      Logout
+                  </a>
                   </li>
                 </ul>
               </nav>
@@ -370,7 +384,7 @@
               </svg>
             </span>
             <span class="offcanvas__stikcy--toolbar__label">Wishlist</span>
-            <span class="items__count">{{ cartItems.length }}</span>
+            <span class="items__count">{{ wishlistItems.length }}</span>
           </router-link>
         </li>
       </ul>
@@ -378,7 +392,6 @@
     <!-- End Offcanvas stikcy toolbar -->
 
     <!-- Start offCanvas minicart -->
-    <!-- <MiniCart /> -->
     <MiniCart :active="showMinicart" :closeMinicart="closeMinicart" />
     <!-- End offCanvas minicart -->
 
@@ -403,7 +416,7 @@ export default {
     ModalSearch,
   },
   computed: {
-    ...mapGetters(["systemModal", "cartItems", "isLoggedIn", "likedItems"]),
+    ...mapGetters(["systemModal", "cartItems", "isLoggedIn", "wishlistItems"]),
   },
   data() {
     return {
@@ -412,7 +425,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["showOrHiddenModal"]),
+    ...mapActions('notification', ["showOrHiddenModal"]),
+    ...mapActions(["logout"]),
     showMiniCartFunc: function () {
       this.showMinicart = true;
       // this.$emit("showModal", this.showMinicart);

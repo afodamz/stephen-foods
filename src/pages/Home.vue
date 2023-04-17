@@ -554,7 +554,6 @@ import ListView from "@/components/product-list/ListView.vue";
 import Pagination from "@/components/Pagination.vue";
 import Testimonial from "@/components/Testimonials.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
-import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -608,6 +607,7 @@ export default {
         const decreaseCurrentPageByOne = this.currentPage - 1;
         this.currentPage = decreaseCurrentPageByOne;
       } else if (isNaN(convertToNumber)) {
+        console.log("empty space")
       } else {
         this.currentPage = convertToNumber;
       }
@@ -621,7 +621,6 @@ export default {
     ...mapActions(["getProducts"]),
     async fetchProducts() {
       const getData = await this.getProducts();
-      console.log("getData", getData);
       this.allProducts = getData;
       this.pageItemsCount = getData.length;
       this.indexOfLastItems = this.currentPage * this.selectPerPage;

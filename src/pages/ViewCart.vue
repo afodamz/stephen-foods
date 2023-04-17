@@ -70,7 +70,9 @@
                                         </tbody>
                                     </table> 
                                     <div class="continue__shopping d-flex justify-content-between">
-                                        <a class="continue__shopping--link" href="shop.html">Continue shopping</a>
+                                        <router-link tag="a" class="continue__shopping--link" to="/">
+                  Continue shopping
+                </router-link>
                                         <button @click="clearCart" class="continue__shopping--clear" type="submit">Clear Cart</button>
                                     </div>
                                 </div>
@@ -133,25 +135,25 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  name: "ViewCart",
-  computed: {
-    ...mapGetters(["cartItems"]),
-  },
-  methods: {
-    ...mapActions(["UPDATE_CART_ITEM_QUANTITY", "REMOVE_FROM_CART", "CLEAR_CART"]),
-    removeCartItem(product){
-        this.REMOVE_FROM_CART(product);
+    name: "ViewCart",
+    computed: {
+        ...mapGetters(["cartItems"]),
     },
-    updateCartItemQty(product, quantity){
-        this.UPDATE_CART_ITEM_QUANTITY({cartItem: product, quantity: quantity});
+    methods: {
+        ...mapActions(["UPDATE_CART_ITEM_QUANTITY", "REMOVE_FROM_CART", "CLEAR_CART"]),
+        removeCartItem(product) {
+            this.REMOVE_FROM_CART(product);
+        },
+        updateCartItemQty(product, quantity) {
+            this.UPDATE_CART_ITEM_QUANTITY({ cartItem: product, quantity: quantity });
+        },
+        clearCart() {
+            this.CLEAR_CART();
+        },
     },
-    clearCart(){
-        this.CLEAR_CART();
+    mounted() {
+        console.log("active", this.active);
+        // Use the parent function directly here
     },
-  },
-  mounted() {
-    console.log("active", this.active);
-    // Use the parent function directly here
-  },
 };
 </script>

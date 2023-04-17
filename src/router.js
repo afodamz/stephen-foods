@@ -11,6 +11,7 @@ import VueRouter from 'vue-router';
 import LoginRegister from '@/pages/LoginRegister.vue';
 import Account from '@/pages/Account.vue';
 import ForgotPassword from '@/pages/ForgotPassword.vue' 
+import {JwtService} from "@/services/local/jwt.service";
 
 Vue.use(Router)
 const routes = [
@@ -40,12 +41,24 @@ const routes = [
   {
     path: '/checkout',
     name: 'Checkout',
-    component: Checkout
+    component: Checkout,
+    beforeEnter: (to, from, next) => {
+      console.log('called route');
+      const isAuth = JwtService.checkTokens();
+      console.log("checking is auth")
+      if (isAuth) {
+          next();
+      } else {
+          next({
+              name: 'Login',
+          })
+      }
+  }
   },
   {
     path: '/cart',
     name: 'cart',
-    component: ViewCart
+    component: ViewCart,
   },
   {
     path: '/details/:id',
@@ -54,8 +67,36 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'login',
-    component: LoginRegister
+    name: 'Login',
+    component: LoginRegister,
+  //   beforeEnter: (to, from, next) => {
+  //     const user = JwtService.getUser();
+  //     if (!user) {
+  //         next()
+  //     } else {
+  //         next({
+  //             name: 'Home',
+  //             // query: {
+  //             //     from: to.name
+  //             // }
+  //         })
+  //     }
+  // }
+    beforeEnter: (to, from, next) => {
+      console.log('called route');
+      const isAuth = JwtService.checkTokens();
+      console.log("checking is auth")
+      if (!isAuth) {
+          next();
+      } else {
+          next({
+              name: 'Home',
+              // query: {
+              //     from: to.name
+              // }
+          })
+      }
+  }
     // component: () => import('@/pages/PageNotFound.vue')
   },
   {
@@ -73,7 +114,20 @@ const routes = [
   {
     path: '/account',
     name: 'account',
-    component: Account
+    component: Account,
+    beforeEnter: (to, from, next) => {
+      const isAuth = JwtService.checkTokens();
+      if (isAuth) {
+          next()
+      } else {
+          next({
+              name: 'login',
+              // query: {
+              //     from: to.name
+              // }
+          })
+      }
+  }
     // component: () => import('@/pages/PageNotFound.vue')
   },
   // {

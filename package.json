@@ -10,13 +10,17 @@
   "dependencies": {
     "axios": "^1.2.2",
     "core-js": "^3.8.3",
+    "dotenv-webpack": "^8.0.1",
+    "js-cookie": "^3.0.1",
+    "jwt-decode": "^3.1.2",
     "vue": "^2.6.14",
     "vue-carousel": "^0.18.0",
+    "vue-js-cookie": "^2.1.0",
     "vue-router": "^3.5.0",
     "vue-slick-carousel": "^1.0.6",
     "vue-spinner": "^1.0.4",
+    "vue-toast-notification": "^1.x",
     "vue-toasted": "^1.1.26",
-    "vue-toast-notification": "^0.6",
     "vuex": "^3.1.0"
   },
   "devDependencies": {

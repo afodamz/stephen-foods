@@ -232,7 +232,6 @@
   <script>
 import Vue from "vue";
 import axios from "axios";
-import { useToast } from "vue-toast-notification";
 export default {
   name: "Footer",
   data() {
@@ -262,18 +261,6 @@ export default {
           });
         });
     },
-  },
-  async created() {
-    const $toast = useToast();
-    let instance = $toast.success("You did it!");
-    instance.dismiss();
-    $toast.clear();
-
-    Vue.$toast.success("Mail Registered successfully.", {
-      // override the global option
-      position: "bottom-left",
-      duration: 3000,
-    });
   },
 };
 </script>

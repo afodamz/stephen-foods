@@ -3775,7 +3775,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .minicart__conditions {
-    padding: 20px 0
+    padding: 20px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
 .minicart__conditions--input {
@@ -5355,7 +5358,12 @@ input[type=number]::-webkit-outer-spin-button {
     justify-content: center
 }
 
-.product__items--action__btn:hover {
+/* .product__items--action__btn:hover {
+    background: var(--secondary-color);
+    color: var(--white-color)
+} */
+
+.product__items--action__btn.active {
     background: var(--secondary-color);
     color: var(--white-color)
 }

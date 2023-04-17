@@ -10,8 +10,8 @@ const state = {
         timeoutEvent: null,
     },
 
-    toast: {message: '', class_name: ''},
-    alert: {message: '', class_name: ''}
+    toast: {message: '', class_name: '', type: ''},
+    alert: {message: '', class_name: '', type: ''}
 };
 
 const mutations = {
@@ -32,22 +32,23 @@ const mutations = {
         state.isLoading = boolean;
     },
     [NotificationAction.SHOW_TOAST_SUCCESS](state, message) {
-        state.toast = {class_name: 'alert alert-success', message};
+        console.log("success notification")
+        state.toast = {class_name: 'alert alert-success', type: 'success', message};
     },
     [NotificationAction.SHOW_TOAST_ERROR](state, message) {
-        state.toast = {class_name: 'alert alert-danger', message};
+        state.toast = {class_name: 'alert alert-danger', type: 'error', message};
     },
     [NotificationAction.CLEAR_TOAST](state) {
-        state.toast = {message: '', class_name: ''};
+        state.toast = {message: '', class_name: '', type: ''};
     },
     [NotificationAction.SHOW_ALERT_SUCCESS](state, message) {
-        state.alert = {class_name: 'alert alert-success', message};
+        state.alert = {class_name: 'alert alert-success', type: 'success', message};
     },
     [NotificationAction.SHOW_DIALOG_ERROR](state, message) {
-        state.alert = {class_name: 'alert alert-danger', message};
+        state.alert = {class_name: 'alert alert-danger', type: 'error', message};
     },
     [NotificationAction.CLEAR_ALERT](state) {
-        state.alert = {message: '', class_name: ''};
+        state.alert = {message: '', class_name: '', type: ''};
     }
 };
 
@@ -80,7 +81,7 @@ const getters = {
     getDialogClassName: (state) => state.class_name,
 };
 
-export default {
+export const notification = {
     namespaced: true,
     state,
     mutations,

@@ -1,26 +1,30 @@
-import {AuthAction, NotificationAction} from '../types.actions'
-import {JwtService} from "@/services/local/jwt.service";
-import {UsersService} from "@/services/local/users.service";
-
+import { AuthAction, NotificationAction } from '../types.actions'
+import { JwtService } from "@/services/local/jwt.service";
+import { UsersService } from "@/services/local/users.service";
+import router from '../../router';
 
 const state = {
-    isLoggedIn: !!JwtService.getToken(),
+    isLoggedIn: !!JwtService.getCacheValue('token'),
     isRegistering: false,
+    isRegistered: false,
     isLoggingIn: false,
     user: {},
+    profile: {},
     errors: {}
 };
 
 const mutations = {
     //[AuthAction.SET_USER](state, user) {
     'SET_USER'(state, user) {
-        JwtService.saveUser(user);
+        JwtService.saveLocalStorage('user', user);
         state.isLoggedIn = true;
         state.user = user;
         state.errors = {};
     },
-
-    [AuthAction.LOGOUT](state) {
+    'SET_PROFILE'(state, profile) {
+        state.profile = profile;
+    },
+    'LOGOUT'(state) {
         JwtService.clearSession();
         state.isLoggedIn = false;
         state.user = {};
@@ -29,7 +33,9 @@ const mutations = {
     'IS_REGISTERING'(state, boolean) {
         state.isRegistering = boolean;
     },
-
+    'IS_REGISTERED'(state, boolean) {
+        state.isRegistered = boolean;
+    },
     [AuthAction.IS_LOGGING_IN](state, boolean) {
         state.isLoggingIn = boolean;
     },
@@ -39,55 +45,73 @@ const mutations = {
 };
 
 const actions = {
-    [AuthAction.LOGIN](context, loginDto) {
-        return new Promise((resolve, reject) => {
-            context.commit(AuthAction.IS_LOGGING_IN, true);
-            UsersService.login(loginDto)
-                .then(({data}) => {
-                    if (data.success) {
-                        context.commit(NotificationAction.SHOW_ALERT_SUCCESS, 'Logged in successfully', {root: true});
-                        context.commit(AuthAction.IS_LOGGING_IN, false);
-                        context.commit(AuthAction.IS_LOGGED_IN, true);
-                        // append the token to the user object
-                        data.user.token = data.token;
-                        context.commit(AuthAction.SET_USER, data.user);
-                        // context.commit(AuthAction.LOGIN_SUCCESS, data.user);
-                        resolve(data);
-                    } else {
-                        reject({success: false, full_messages: data.full_messages});
-                    }
-                })
-                .catch(error => {
-                    context.commit(AuthAction.LOGIN_FAILURE, error.message);
-                    reject({success: false, full_messages: [error.message]});
-                });
-        });
+    async login({ commit }, loginDto) {
+        commit('IS_LOGGING_IN', true);
+        UsersService.login(loginDto)
+            .then(({ data }) => {
+                console.log(data)
+                if (!data.error) {
+                    // commit(`notification/${NotificationAction.SHOW_TOAST_SUCCESS}`, 'Logged in successfully', {root: true});
+                    commit('IS_LOGGED_IN', true);
+                    commit(`notification/${NotificationAction.SHOW_TOAST_SUCCESS}`, 'Logged in successfully');
+                    // let {accessToken, refreshToken} = data
+                    // data.token = data.token;
+                    const { tokens, user } = data
+                    const { accessToken, refreshToken } = tokens;
+                    commit('SET_USER', user);
+                    JwtService.saveCacheValue('token', accessToken);
+                    JwtService.saveCacheValue('refreshToken', refreshToken);
+                    router.push("/");
+                } else {
+                    commit('IS_LOGGING_IN', false);
+                    commit(`notification/${NotificationAction.SHOW_TOAST_ERROR}`, 'Unable to login');
+                }
+            })
+            .catch(error => {
+                console.log("error", error)
+                commit(`notification/${NotificationAction.SHOW_TOAST_ERROR}`, 'Error with login credentials');
+                // commit(AuthAction.LOGIN_FAILURE, error.message);
+            });
+    },
+    async getProfile({ commit }) {
+        UsersService.profile()
+            .then(({ data }) => {
+                console.log(data)
+                if (data.error) {
+                    commit(`notification/${NotificationAction.SHOW_TOAST_ERROR}`, 'Unable to login');
+                } else {
+                    commit('SET_PROFILE', data.result);
+                }
+            })
+            .catch(error => {
+                console.log("error", error)
+                commit(`notification/${NotificationAction.SHOW_TOAST_ERROR}`, 'Error with login credentials');
+                // commit(AuthAction.LOGIN_FAILURE, error.message);
+            });
+    },
+    async logout({ commit }) {
+        commit('LOGOUT');
+        // commit(`notifications/${NotificationAction.SHOW_ALERT_SUCCESS}`, 'Logged out successfully \n we will be awaiting your comeback', {root: true});
+        commit(`notifications/${NotificationAction.SHOW_ALERT_SUCCESS}`, 'Logged out successfully. \n We will be awaiting your comeback');
+        router.push("/login");
     },
 
-    [AuthAction.LOGOUT](context) {
-        return new Promise((resolve, reject) => {
-            context.commit(AuthAction.LOGOUT);
-            context.commit(`notifications/${NotificationAction.SHOW_ALERT_SUCCESS}`, 'Logged out successfully', {root: true});
-            resolve({success: true});
-        });
-    },
-
-    [AuthAction.REGISTER](context, registerDto) {
-        return new Promise((resolve, reject) => {
-            context.commit(AuthAction.IS_REGISTERING, true);
-            UsersService.register(registerDto)
-                .then((response) => {
-                    if (response.data.success) {
-                        context.commit(AuthAction.IS_REGISTERING, false);
-                        context.commit(AuthAction.REGISTER_SUCCESS, response.data);
-                    }
-                    resolve(response.data);
-                })
-                .catch(({response}) => {
-                    context.commit(AuthAction.REGISTER_FAILURE, response.data.errors);
-                    reject(response);
-                });
-        });
+    async register({ commit }, registerDto) {
+        commit(AuthAction.IS_REGISTERING, true);
+        UsersService.register(registerDto)
+            .then(({ data, status }) => {
+                console.log("response", data)
+                if (data.msg === 'User successfully created' && status === 201) {
+                    commit('IS_REGISTERED', true);
+                    commit(`notification/${NotificationAction.SHOW_TOAST_SUCCESS}`, 'User Created in successfully \n Please login with credentials');
+                } else {
+                    commit(`notification/${NotificationAction.SHOW_TOAST_ERROR}`, 'Unable to register user');
+                }
+            })
+            .catch(({ error }) => {
+                console.log("error", error)
+                commit(`notification/${NotificationAction.SHOW_TOAST_ERROR}`, 'Error with login credentials');
+            });
     },
 };
 
@@ -105,7 +129,6 @@ const getters = {
 };
 
 export default {
-    namespaced: true,
     state,
     mutations,
     actions,

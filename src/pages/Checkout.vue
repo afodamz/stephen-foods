@@ -163,17 +163,24 @@
                                 </div>
                                 <div class="section__shipping--address__content">
                                     <div class="row">
-                                        <div class="col-lg-6 mb-12">
+                                        <!-- <div class="col-lg-6 mb-12">
                                             <div class="checkout__input--list ">
                                                 <label>
                                                     <input class="checkout__input--field border-radius-5" placeholder="First name (optional)"  type="text">
                                                 </label>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-6 mb-12">
+                                        </div> -->
+                                        <!-- <div class="col-lg-6 mb-12">
                                             <div class="checkout__input--list">
                                                 <label>
                                                     <input class="checkout__input--field border-radius-5" placeholder="Last name"  type="text">
+                                                </label>
+                                            </div>
+                                        </div> -->
+                                        <div class="col-lg-6 mb-12">
+                                            <div class="checkout__input--list">
+                                                <label>
+                                                    <input class="checkout__input--field border-radius-5" placeholder="Phone Number"  type="text">
                                                 </label>
                                             </div>
                                         </div>
@@ -195,6 +202,13 @@
                                             <div class="checkout__input--list">
                                                 <label>
                                                     <input class="checkout__input--field border-radius-5" placeholder="City"  type="text">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-12">
+                                            <div class="checkout__input--list">
+                                                <label>
+                                                    <input class="checkout__input--field border-radius-5" placeholder="Country"  type="text">
                                                 </label>
                                             </div>
                                         </div>
@@ -242,7 +256,7 @@
                                         </div>
                                     </td>
                                     <td class="cart__table--body__list">
-                                        <span class="cart__price">${{Number(cartItem.price) * Number(cartItem.quantity)}}</span>
+                                        <span class="cart__price">${{ Number(cartItem.totalPrice) }}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -271,7 +285,7 @@
                             <tfoot class="checkout__total--footer">
                                 <tr class="checkout__total--footer__items">
                                     <td class="checkout__total--footer__title checkout__total--footer__list text-left">Total </td>
-                                    <td class="checkout__total--footer__amount checkout__total--footer__list text-right">${{(cartItems.reduce(function (acc, obj) { return acc + obj.totalPrice; }, 0)).toLocaleString('en-US')}}</td>
+                                    <td class="checkout__total--footer__amount checkout__total--footer__list text-right">${{(cartItems.reduce(function (acc, obj) { return acc + Number(obj.totalPrice); }, 0)).toLocaleString('en-US')}}</td>
                                 </tr>
                             </tfoot>
                         </table>

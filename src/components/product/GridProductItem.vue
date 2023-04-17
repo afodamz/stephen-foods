@@ -26,7 +26,9 @@
         <ul class="product__items--action">
           <li class="product__items--action__list">
             <!-- <a class="product__items--action__btn" @click="ADD_PRODUCT_TO_CART(product, 1)" href="#"> -->
-            <a class="product__items--action__btn" @click="addtoWishlist" >
+            <a class="product__items--action__btn" 
+            :class="{ active: wishlistItems.some(wishItem => wishItem.id === product.id) }"
+            @click="wishlistItems.some(wishItem => wishItem.id === product.id) ? removeFromWishlist() : addtoWishlist() " >
               <svg
                 class="product__items--action__btn--svg"
                 xmlns="http://www.w3.org/2000/svg"
@@ -104,13 +106,13 @@
         </ul>
       </div>
       <div class="product__items--content product__items2--content text-center">
-        <a class="add__to--cart__btn" @click="addtoCart">+ Add to cart</a>
+        <a class="add__to--cart__btn" @click="cartItems.some(wishItem => wishItem.id === product.id) ? removeFromCart() : addtoCart() "> {{cartItems.some(cartItem => cartItem.id === product.id) ? '- Remove From Cart' : '+ Add to cart' }}</a>
         <h3 class="product__items--content__title h4">
-          <a href="/details">{{ product.name }}</a>
+          <a >{{ product.name }}</a>
         </h3>
         <div class="product__items--price">
-          <span class="current__price"><sup>C$</sup> {{ product.price }}</span>
-          <span class="old__price"><sup>C$</sup> {{ product.old_price }}</span>
+          <span class="current__price"><sup>$</sup> {{ product.price }}</span>
+          <span v-if="product.old_price || Number(product.old_price) > 0" class="old__price"><sup>$</sup> {{ product.old_price }}</span>
         </div>
         <div
           class="
@@ -156,19 +158,28 @@ export default {
   props: {
     product: Object
   },
+  computed: {
+    ...mapGetters(["wishlistItems", "storeProducts", "cartItems"]),
+  },
   methods: {
-    ...mapActions(["ADD_PRODUCT_TO_CART", "ADD_PRODUCT_TO_WISHLIST"]),
+    ...mapActions(["ADD_PRODUCT_TO_CART", "ADD_PRODUCT_TO_WISHLIST", "REMOVE_FROM_CART", "REMOVE_FROM_WISHLIST"]),
     async convertImage(){
-      console.log("images", this.product.images)
       let images = JSON.parse(this.product.images);
       this.product.images = images;
     },
+    removeFromCart(){
+        this.REMOVE_FROM_CART(this.product)
+    },
     addtoCart(){
-      this.ADD_PRODUCT_TO_CART({product: this.product, quantity: 1})
+      this.ADD_PRODUCT_TO_CART({id: this.product.id, quantity: 1})
     },
     addtoWishlist(){
       this.ADD_PRODUCT_TO_WISHLIST(this.product)
-    }
+    },
+    removeFromWishlist(){
+      console.log('removing from wishlist')
+      this.REMOVE_FROM_WISHLIST(this.product)
+    },
   },
   async created(){
     await this.convertImage();

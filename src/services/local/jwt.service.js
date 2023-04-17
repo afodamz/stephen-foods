@@ -1,24 +1,73 @@
-import {LocalStorageService} from "@/services/local/base/local-storage.service";
+import { CookieStorageService } from "@/services/local/base/cookie-storage.service";
+import { LocalStorageService } from "@/services/local/base/local-storage.service";
+import { get } from '@/services/axios.service';
 
+
+import jwt_decode from 'jwt-decode';
 const USER_KEY = 'user';
 
 export class JwtService {
 
-    static getToken() {
-        const user = LocalStorageService.get('user');
-        return user ? user.token : null;
+    static getCacheValue(val) {
+        // const user = CookieStorageService.get(val);
+        // let userObject = JSON.parse(user);
+        // return userObject ? userObject.accessToken : null;
+        return CookieStorageService.get(val);
     }
 
-    static saveUser(user) {
-        LocalStorageService.set(USER_KEY, JSON.stringify(user));
+    static checkTokens() {
+        try {
+            const token = this.getCacheValue('token');
+            const refreshToken = this.getCacheValue('refreshToken');
+
+            if (!token || !refreshToken) return false;
+
+            const parsedToken = jwt_decode(token);
+            const parsedRefreshToken = jwt_decode(refreshToken);
+
+            if ((parsedToken.exp * 1000 <= Date.now())) {
+                // redirect user to Login if token is expired
+                if ((parsedRefreshToken.exp * 1000 <= Date.now())) {
+                    this.clearSession('token')
+                    this.clearSession('refreshToken')
+                    return false
+                } else {
+                    // get refresh token
+                    get(`/auth/refreshtoken?token=${refreshToken}`)
+                        .then(res => {
+                            console.log("token refresh response", res);
+                            const token = res.data.token;
+                            this.saveCacheValue("token", token);
+                        })
+                        .catch(err => {
+                            console.log('err', err)
+                            return false;
+                        });
+                }
+            } else {
+                return true;
+            }
+        } catch (error) {
+            console.log("get token error", error)
+        }
+
     }
 
-    static getUser() {
-        return JSON.parse(LocalStorageService.get(USER_KEY));
+    static saveCacheValue(key, val) {
+        CookieStorageService.set(key, val);
     }
 
-    static clearSession() {
-        LocalStorageService.clear(USER_KEY);
+    static saveLocalStorage(key, val) {
+        // LocalStorageService.set(key, JSON.stringify(user));
+        LocalStorageService.set(key, JSON.stringify(val));
+    }
+
+    static getLocalStorage(key) {
+        return JSON.parse(LocalStorageService.get(key));
+    }
+
+    static clearSession(key) {
+        CookieStorageService.clear(key);
     }
 
     static isAuthenticated() {

@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
+const Dotenv = require('dotenv-webpack');
 var path = require('path');
 module.exports = defineConfig({
   transpileDependencies: true,

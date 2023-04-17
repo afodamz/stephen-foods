@@ -2,6 +2,7 @@
   <div :class="{'offCanvas__minicart_active':systemModal}">
     <!-- <Loader v-if=`!['Home',].includes($route.name)`/> -->
     <!-- <Header @showModal="addTask" v-if="!['Checkout'].includes($route.name)"></Header> -->
+    <app-notifications></app-notifications>
     <Header v-if="!['Checkout'].includes($route.name)"></Header>
     <main class="main__content_wrapper" >
       <router-view></router-view>
@@ -93,20 +94,22 @@
 </template>
 
 <script>
-import swiper from '../public/assets/js/plugins/swiper-bundle.min.js'
+// import swiper from '../public/assets/js/plugins/swiper-bundle.min.js'
 import Header from "@/layout/Header.vue";
 import Footer from "@/layout/Footer.vue";
-import Loader from "@/layout/Loader.vue";
+// import Loader from "@/layout/Loader.vue";
 import Shipping from "@/components/Shipping.vue";
 import { mapGetters, mapActions } from "vuex";
+import Notifications from '@/components/Notifications.vue'
 
 export default {
   name: "App",
   components: {
     Header,
     Footer,
-    Loader,
-    Shipping
+    // Loader,
+    Shipping,
+    appNotifications: Notifications,
   },
   data() {
     return {
@@ -114,13 +117,19 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["systemModal"]),
+    ...mapGetters(["systemModal", "isLoggedIn"]),
   },
   methods:{
+    ...mapActions(["getProfile"]),
     addTask(modal){
       this.modal = modal
     },
-  }
+  },
+  async created() {
+    if (this.$store.getters["isLoggedIn"]){
+      this.getProfile();
+    }
+  },
 };
 
 </script>

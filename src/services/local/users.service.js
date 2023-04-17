@@ -11,19 +11,23 @@ const register = (userObject) => {
     return AuthAxiosService.register(userObject);
 };
 
+const profile = (userObject) => {
+    return AuthAxiosService.profile(userObject);
+};
+
 const logout = () => {
     JwtService.clearSession();
 };
 
 const init = () => {
-    const user = JwtService.getUser();
-    if (user && user.username) {
+    const user = JwtService.checkTokens();
+    if (user) {
         AxiosService.setUser(user);
     }
 };
 const getUser = () => {
-    return JwtService.getUser();
+    return JwtService.checkTokens();
 };
 export const UsersService = {
-    register, login, logout, init, getUser
+    register, login, logout, init, getUser, profile
 };

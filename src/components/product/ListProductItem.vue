@@ -153,7 +153,6 @@ export default {
   },
   methods: {
     async convertImage(){
-      console.log("images", this.product.images)
       let images = JSON.parse(this.product.images);
       this.product.images = images;
     }

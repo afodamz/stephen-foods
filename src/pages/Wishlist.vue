@@ -48,14 +48,14 @@
                 </thead>
                 <tbody class="cart__table--body">
                   <tr
-                    v-for="likedItem in likedItems"
+                    v-for="likedItem in wishlistItems"
                     :key="likedItem.id"
                     class="cart__table--body__items"
                   >
                     <td class="cart__table--body__list">
                       <div class="cart__product d-flex align-items-center">
                         <button
-                        @click="removeWishItem"
+                        @click="removeWishItem(likedItem)"
                           class="cart__remove--btn"
                           aria-label="search button"
                           type="button"
@@ -93,7 +93,7 @@
                     </td>
                     <td class="cart__table--body__list">
                       <span class="cart__price"
-                        >£{{Number(likedItem.price)}}</span
+                        >${{Number(likedItem.price)}}</span
                       >
                     </td>
                     <td class="cart__table--body__list text-center">
@@ -136,7 +136,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Wishlist",
   computed: {
-    ...mapGetters(["likedItems"]),
+    ...mapGetters(["wishlistItems"]),
   },
   methods: {
     ...mapActions(["CLEAR_WISHLIST", "REMOVE_FROM_WISHLIST", "ADD_PRODUCT_TO_CART"]),

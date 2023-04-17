@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Start breadcrumb section -->
-    <section class="breadcrumb__section breadcrumb__bg">
+    <!-- <section class="breadcrumb__section breadcrumb__bg">
       <div class="container">
         <div class="row row-cols-1">
           <div class="col">
@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- End breadcrumb section -->
 
     <!-- Start login section  -->
@@ -44,48 +44,24 @@
                   </div>
                   <div class="account__login--inner">
                     <label>
-                      <input
-                        class="account__login--input"
-                        placeholder="Email Addres"
-                        type="email"
-                        v-model="username"
-                      />
+                      <input class="account__login--input" placeholder="Email Addres" type="email" v-model="email" />
                     </label>
                     <label>
-                      <input
-                        class="account__login--input"
-                        placeholder="Password"
-                        type="password"
-                        v-model="password"
-                      />
+                      <input class="account__login--input" placeholder="Password" type="password" v-model="password" />
                     </label>
-                    <div
-                      class="account__login--remember__forgot mb-15 d-flex justify-content-between align-items-center"
-                    >
+                    <div class="account__login--remember__forgot mb-15 d-flex justify-content-between align-items-center">
                       <div class="account__login--remember position__relative">
-                        <input
-                          class="checkout__checkbox--input"
-                          id="check1"
-                          type="checkbox"
-                        />
+                        <input class="checkout__checkbox--input" id="check1" type="checkbox" />
                         <span class="checkout__checkbox--checkmark"></span>
-                        <label
-                          class="checkout__checkbox--label login__remember--label"
-                          for="check1"
-                        >
-                          Remember me</label
-                        >
+                        <label class="checkout__checkbox--label login__remember--label" for="check1">
+                          Remember me</label>
                       </div>
                       <button class="account__login--forgot" type="submit">
                         Forgot Your Password?
                       </button>
                     </div>
-                    <button
-                      class="account__login--btn btn"
-                      type="submit"
-                      @click.prevent="submitLoginForm"
-                      :disabled="isLoading"
-                    >
+                    <button class="account__login--btn btn" type="submit" @click.prevent="submitLoginForm"
+                      :disabled="isLoading">
                       <i v-if="isLoading" class="fa fa-spinner fa-spin"></i>
                       Login
                     </button>
@@ -116,69 +92,35 @@
                   </div>
                   <div class="account__login--inner">
                     <label>
-                      <input
-                        class="account__login--input"
-                        placeholder="Username"
-                        type="text"
-                      />
+                      <input class="account__login--input" placeholder="Email Address" v-model="regmail" type="email" />
                     </label>
                     <label>
-                      <input
-                        class="account__login--input"
-                        placeholder="Email Address"
-                        type="email"
-                      />
+                      <input class="account__login--input" placeholder="Phone" v-model="phone" type="text" />
                     </label>
                     <label>
-                      <input
-                        class="account__login--input"
-                        placeholder="Phone"
-                        type="text"
-                      />
+                      <input class="account__login--input" placeholder="First Name" v-model="firstName" type="email" />
                     </label>
                     <label>
-                      <input
-                        class="account__login--input"
-                        placeholder="First Name"
-                        type="email"
-                      />
+                      <input class="account__login--input" placeholder="Last Name" v-model="lastName" type="email" />
                     </label>
                     <label>
-                      <input
-                        class="account__login--input"
-                        placeholder="Last Name"
-                        type="email"
-                      />
+                      <input class="account__login--input" placeholder="Username" v-model="username" type="email" />
                     </label>
                     <label>
-                      <input
-                        class="account__login--input"
-                        placeholder="Password"
-                        type="password"
-                      />
+                      <input class="account__login--input" placeholder="Password" type="password" v-model="newpassword" />
                     </label>
                     <label>
-                      <input
-                        class="account__login--input"
-                        placeholder="Confirm Password"
-                        type="password"
-                      />
+                      <input class="account__login--input" placeholder="Confirm Password" type="password"
+                        v-model="confirmpassword" />
                     </label>
                     <div class="account__login--remember position__relative">
-                      <input
-                        class="checkout__checkbox--input"
-                        id="check2"
-                        type="checkbox"
-                      />
+                      <input class="checkout__checkbox--input" id="check2" type="checkbox" />
                       <span class="checkout__checkbox--checkmark"></span>
-                      <label
-                        class="checkout__checkbox--label login__remember--label"
-                        for="check2"
-                      >
-                        I have read and agree to the terms & conditions</label
-                      >
+                      <label class="checkout__checkbox--label login__remember--label" for="check2">
+                        I have read and agree to the terms & conditions</label>
                     </div>
-                    <button class="account__login--btn btn mb-10" type="submit">
+                    <button type="submit" class="account__login--btn btn mb-10" @click.prevent="submitRegisterForm"
+                      :disabled="isLoading">
                       Submit & Register
                     </button>
                   </div>
@@ -194,45 +136,69 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
-import {AuthAction} from "@/store/types.actions";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "LoginRegister",
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+    clearForm() {
+      return this.$store.getters["isRegistered"];
+    },
+  },
   data() {
     return {
-      username: "",
+      email: "",
       password: "",
       isLoading: false,
+      regmail: "",
+      phone: "",
+      firstName: "",
+      lastName: "",
+      username: "",
+      newpassword: "",
+      confirmpassword: "",
     };
   },
   methods: {
-    ...mapActions('auth', {login: AuthAction.LOGIN}),
-    ...mapActions('notifications', ['clearMessage']),
+    ...mapActions(["login", "clearMessage", "register"]),
     submitLoginForm() {
-                this.isLoading = true;
-                let credentials = {
-                    username: this.username,
-                    password: this.password
-                };
-                this.login(credentials).then(() => {
-                    this.isLoading = false;
-                    this.clearMessage();
-                    this.$router.push({
-                        name: 'product-list'
-                    });
-                }).catch((error) => {
-                    this.isLoading = false;
-                    let message_obj = {
-                        message: error.message,
-                        messageClass: "danger",
-                        autoClose: true
-                    };
-                    this.addMessage(message_obj);
-                }).then(() => {
-                    this.isLoading = false
-                })
-            }
-  }
+      this.isLoading = true;
+      let credentials = {
+        email: this.email,
+        password: this.password,
+      };
+      this.login(credentials)
+      this.isLoading = false;
+    },
+    submitRegisterForm() {
+      this.isLoading = true;
+      let credentials = {
+        email: this.regmail,
+        phone: this.phone,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        userName: this.username,
+        password: this.newpassword,
+        password1: this.confirmpassword,
+      };
+      this.register(credentials)
+      this.isLoading = false;
+    },
+  },
+  watch: {
+    // WARNING: if you plan using this keyword, the functions should not be implemented with () =>{} but as below:
+    clearForm: function () {
+      if (this.$store.state.isRegistered) {
+        this.regmail = "";
+        this.phone = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.username = "";
+        this.newpassword = "";
+        this.confirmpassword = "";
+      }
+    },
+  },
 };
 </script>
