@@ -48,7 +48,9 @@ const actions = {
 
     },
     [CartAction.UPDATE_CART_ITEM_QUANTITY](context, args) {
-        context.dispatch(CartAction.ADD_PRODUCT_TO_CART, { product: args.cartItem, quantity: args.quantity })
+        (async () => {
+            context.dispatch(CartAction.ADD_PRODUCT_TO_CART, { product: args.cartItem, quantity: args.quantity })
+        })();
     },
     'CLEAR_CART'(context) {
         CartService.emptyCart()

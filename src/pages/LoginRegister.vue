@@ -44,11 +44,20 @@
                   </div>
                   <div class="account__login--inner">
                     <label>
-                      <input class="account__login--input" placeholder="Email Addres" type="email" v-model="email" />
+                      <!-- <input class="account__login--input" placeholder="Email Addres" type="email" v-model="email" /> -->
+                      <input class="account__login--input" placeholder="Email Addres" type="email" :value="email" @input="event => {
+                          email = event.target.value;
+                          emailError = '';
+                        }" />
+                      <!-- <input class="account__login--input" placeholder="Email Addres" type="email" :value="email" @input="updateValueState(this.email, $event.target.value)" /> -->
                     </label>
+                    <div style="color: red" v-if="emailError">*{{ emailError }}</div>
                     <label>
-                      <input class="account__login--input" placeholder="Password" type="password" v-model="password" />
+                      <!-- <input class="account__login--input" placeholder="Password" type="password" v-model="password" /> -->
+                      <input class="account__login--input" placeholder="Password" type="password" :value="password"
+                        @input="event => { password = event.target.value; }" />
                     </label>
+                    <div style="color: red" v-if="passwordError">*{{ passwordError }}</div>
                     <div class="account__login--remember__forgot mb-15 d-flex justify-content-between align-items-center">
                       <div class="account__login--remember position__relative">
                         <input class="checkout__checkbox--input" id="check1" type="checkbox" />
@@ -149,20 +158,41 @@ export default {
   data() {
     return {
       email: "",
+      emailError: "",
       password: "",
+      passwordError: "",
       isLoading: false,
       regmail: "",
+      regmailError: "",
       phone: "",
+      phoneError: "",
       firstName: "",
+      firstNameError: "",
       lastName: "",
+      lastNameError: "",
       username: "",
+      usernameError: "",
       newpassword: "",
+      newpasswordError: "",
       confirmpassword: "",
+      confirmpasswordError: "",
     };
   },
   methods: {
     ...mapActions(["login", "clearMessage", "register"]),
+    validateEmail(email) {
+      var re = /\S+@\S+\.\S+/;
+      return re.test(email);
+    },
     submitLoginForm() {
+      if (!this.email || !this.validateEmail(this.email)) {
+        this.emailError = "email is required";
+        return;
+      }
+      if (!this.password) {
+        this.passwordError = "Password is required";
+        return;
+      }
       this.isLoading = true;
       let credentials = {
         email: this.email,
@@ -172,6 +202,34 @@ export default {
       this.isLoading = false;
     },
     submitRegisterForm() {
+      if (!this.regmail) {
+        this.regmailError = "email is required";
+        return;
+      }
+      if (!this.phone) {
+        this.phoneError = "email is required";
+        return;
+      }
+      if (!this.email) {
+        this.emailError = "email is required";
+        return;
+      }
+      if (!this.email) {
+        this.emailError = "email is required";
+        return;
+      }
+      if (!this.email) {
+        this.emailError = "email is required";
+        return;
+      }
+      if (!this.email) {
+        this.emailError = "email is required";
+        return;
+      }
+      if (!this.email) {
+        this.emailError = "email is required";
+        return;
+      }
       this.isLoading = true;
       let credentials = {
         email: this.regmail,

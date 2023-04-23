@@ -79,7 +79,9 @@ export const WishlistService = {
                 if (LocalStorageService.get(WISHLIST_KEY)) {
                     const cart = JSON.parse(LocalStorageService.get(WISHLIST_KEY));
                     // return cart;
-                    return AxiosService.authGet(`${process.env.BACKEND_URL}wishlist/public?productIds=${cart}`);
+                    const response = await AxiosService.authGet(`${process.env.BACKEND_URL}wishlist/public?productIds=${cart}`);
+                    const { result } = response.data;
+                    return result
                 }
             }
         }

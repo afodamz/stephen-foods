@@ -81,7 +81,9 @@ export const CartService = {
                     const carts = JSON.parse(LocalStorageService.get(CART_KEY));
                     // return cart;
                     let cartItems = carts.map(cart => cart.id)
-                    return AxiosService.authGet(`${process.env.BACKEND_URL}wishlist/public?productIds=${cartItems}`);
+                    const response = AxiosService.authGet(`${process.env.BACKEND_URL}wishlist/public?productIds=${cartItems}`);
+                    const { result } = response.data;
+                    return result
                 }
             }
         }
